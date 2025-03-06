@@ -11,13 +11,9 @@ public class EnemyHealth : MonoBehaviour
     public float knockbackForce=15f;
     public Rigidbody2D rb;
     public void TakeDamage(float amt,Vector2 attackPosition) {
-        StartCoroutine(KnockBack(attackPosition));
+        StartCoroutine(KnockBack(attackPosition,amt));
         StartCoroutine(DamageFlash());
-        if (amt>health) {
-            Die();
-        } else {
-            health-=amt;
-        }
+        
     }
 
     public void Heal(float amt) {
@@ -51,7 +47,7 @@ public class EnemyHealth : MonoBehaviour
         sr.color = Color.white;
     }
 
-    IEnumerator KnockBack(Vector2 attackPosition) {
+    IEnumerator KnockBack(Vector2 attackPosition, float amt) {
 
         Vector2 knockbackDirection = (transform.position - (Vector3)attackPosition).normalized;
         float duration = 0.4f;
@@ -65,6 +61,11 @@ public class EnemyHealth : MonoBehaviour
         }
 
     rb.velocity = Vector2.zero;
+    if (amt>health) {
+            Die();
+        } else {
+            health-=amt;
+        }
     }
 
 
