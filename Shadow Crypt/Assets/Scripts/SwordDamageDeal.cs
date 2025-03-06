@@ -33,14 +33,11 @@ public class SwordDamageDeal : MonoBehaviour
             {
                 enemy.TakeDamage(60,transform.position);
                 DisableHitbox();
-                StartCoroutine(enableAgain());
+                
 
             }
         }
     }
 
-    IEnumerator enableAgain() {
-        yield return new WaitForSeconds(0.18f);
-        EnableHitbox();
-    }
+ 
 }
