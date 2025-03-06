@@ -14,11 +14,12 @@ public class WeaponParent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /*
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = 0;
         Vector3 pos = transform.position;
         pos.z = 0;
         transform.right = (mousePos-(Vector3)pos).normalized;
-        
+        */
     }
 }
