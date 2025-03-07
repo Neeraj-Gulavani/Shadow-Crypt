@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Cinemachine;
 public class EnemyHealth : MonoBehaviour
 {
     public float health;
@@ -9,8 +9,10 @@ public class EnemyHealth : MonoBehaviour
     private SpriteRenderer sr;
     public float flashDuration;
     public float knockbackForce=15f;
+    public CinemachineImpulseSource impulseSrc;
     public Rigidbody2D rb;
     public void TakeDamage(float amt,Vector2 attackPosition) {
+        Shake(1f);
         StartCoroutine(KnockBack(attackPosition,amt));
         StartCoroutine(DamageFlash());
         
@@ -34,6 +36,9 @@ public class EnemyHealth : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
     }
 
+    void Shake(float intensity=1f) {
+        impulseSrc.GenerateImpulseWithForce(intensity);
+    }
     // Update is called once per frame
     void Update()
     {
