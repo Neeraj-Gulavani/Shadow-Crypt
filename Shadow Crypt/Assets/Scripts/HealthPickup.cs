@@ -2,14 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class bullet : MonoBehaviour
+public class HealthPickup : MonoBehaviour
 {
-    public float life=3f;
-    public float damage=10f;
     // Start is called before the first frame update
     void Start()
     {
-        Destroy(gameObject,life);
+        
     }
 
     // Update is called once per frame
@@ -20,11 +18,8 @@ public class bullet : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag("Player")) {
-            PlayerHealth ph =other.GetComponent<PlayerHealth>();
-            if (ph!=null) {
-                ph.TakeDamage(damage);
-                gameObject.SetActive(false);
-            }
+            other.GetComponent<PlayerHealth>().Heal(40);
+            gameObject.SetActive(false);
         }
     }
 }

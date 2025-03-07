@@ -40,6 +40,8 @@ public class EnemyAI : MonoBehaviour
                 MoveToPlayer();
             }
 
+        } else {
+            //rb.velocity = Vector2.zero;
         }
     }
 
