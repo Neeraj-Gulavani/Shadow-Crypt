@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 6871966257547728421}
   - component: {fileID: 8416884319733670677}
   - component: {fileID: 273897253037713041}
-  - component: {fileID: 1296354246991522850}
+  - component: {fileID: 951297080530397890}
+  - component: {fileID: 8484745945326933497}
   m_Layer: 0
   m_Name: Enemy1
   m_TagString: Enemy
@@ -33,7 +34,8 @@ Transform:
   m_LocalPosition: {x: 4.4, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2668810823519699107}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3415511798621075027
@@ -149,6 +151,7 @@ MonoBehaviour:
   maxHealth: 100
   flashDuration: 0.4
   knockbackForce: 15
+  impulseSrc: {fileID: 951297080530397890}
   rb: {fileID: 273897253037713041}
 --- !u!50 &273897253037713041
 Rigidbody2D:
@@ -177,7 +180,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &1296354246991522850
+--- !u!114 &951297080530397890
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -230,3 +233,55 @@ MonoBehaviour:
     m_DissipationDistance: 100
     m_PropagationSpeed: 343
   m_DefaultVelocity: {x: 0, y: -1, z: 0}
+--- !u!114 &8484745945326933497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1035197473516716974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3dbc15830881e04cbc9182d53bf4ea2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  speed: 3
+  detectRange: 5
+  shootRange: 3
+  bullet: {fileID: 2695158854262626587, guid: 5e95ba90951146848b58b9eb5bc934c7, type: 3}
+  fireRate: 1
+  nextFireTime: 0
+  firePt: {fileID: 2668810823519699107}
+  bulletSpeed: 10
+--- !u!1 &8759302262237006165
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2668810823519699107}
+  m_Layer: 0
+  m_Name: FirePt
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2668810823519699107
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8759302262237006165}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.64, y: -0.04, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4930364342497388471}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
