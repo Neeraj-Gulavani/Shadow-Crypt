@@ -10,15 +10,18 @@ public class PlayerHealth : MonoBehaviour
     public float flashDuration;
     public CinemachineImpulseSource impulseSrc;
     public Rigidbody2D rb;
+    public GameObject h1,h2,h3,h4;
     public void TakeDamage(float amt) {
-        Shake(1f);
+        Shake(0.2f);
 
         StartCoroutine(DamageFlash());
-            if (amt>health) {
+            if (amt>=health) {
             Die();
+            health-=amt;
         } else {
             health-=amt;
         }
+        DispHearts();
     }
 
     public void Heal(float amt) {
@@ -27,6 +30,7 @@ public class PlayerHealth : MonoBehaviour
         } else {
         health+=amt;
         }
+        DispHearts();
     }
     public void Die() {
         gameObject.SetActive(false);
@@ -55,6 +59,34 @@ public class PlayerHealth : MonoBehaviour
         sr.color = Color.white;
     }
 
-
+    void DispHearts() {
+        if (health>30) {
+            h1.SetActive(true);
+            h2.SetActive(true);
+            h3.SetActive(true);
+            h4.SetActive(true);
+        } else if (health>20 && health<31) {
+            h1.SetActive(true);
+            h2.SetActive(true);
+            h3.SetActive(true);
+            h4.SetActive(false);
+        } else if (health<21 && health>10) {
+            h1.SetActive(true);
+            h2.SetActive(true);
+            h3.SetActive(false);
+            h4.SetActive(false);
+        } else if (health<11 && health>0) {
+            h1.SetActive(true);
+            h2.SetActive(false);
+            h3.SetActive(false);
+            h4.SetActive(false);
+        }
+        else if (health<=1) {
+            h1.SetActive(false);
+            h2.SetActive(false);
+            h3.SetActive(false);
+            h4.SetActive(false);
+        }
+    }
 
 }

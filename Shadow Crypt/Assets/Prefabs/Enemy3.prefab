@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 951297080530397890}
   - component: {fileID: 8484745945326933497}
   m_Layer: 0
-  m_Name: Enemy1
+  m_Name: Enemy3
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +32,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.4, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2668810823519699107}
@@ -148,9 +148,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 0
-  maxHealth: 100
+  maxHealth: 240
   flashDuration: 0.4
-  knockbackForce: 15
+  knockbackForce: 7
   impulseSrc: {fileID: 951297080530397890}
   rb: {fileID: 273897253037713041}
 --- !u!50 &273897253037713041
@@ -247,10 +247,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   speed: 3
-  detectRange: 5
-  shootRange: 3
+  detectRange: 10
+  shootRange: 7
   bullet: {fileID: 2695158854262626587, guid: 5e95ba90951146848b58b9eb5bc934c7, type: 3}
-  fireRate: 1.5
+  fireRate: 0.5
   nextFireTime: 1
   firePt: {fileID: 2668810823519699107}
   bulletSpeed: 7
