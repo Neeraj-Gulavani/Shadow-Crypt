@@ -16,7 +16,7 @@ public class MainMenu : MonoBehaviour
     }
 
     public void Quit() {
-        Application.Quit();
+        SceneManager.LoadScene("MainMenu");
     }
     // Start is called before the first frame update
     void Start()
