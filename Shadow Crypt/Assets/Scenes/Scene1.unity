@@ -80020,7 +80020,7 @@ Transform:
   m_GameObject: {fileID: 1511364803}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.39, y: 19.77, z: -10}
+  m_LocalPosition: {x: 2.84, y: -1.37, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -80848,7 +80848,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1878086092}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1429772290}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: Quit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1878086092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81291,7 +81303,7 @@ Transform:
   m_GameObject: {fileID: 2076313316}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.39, y: 19.77, z: -10}
+  m_LocalPosition: {x: 2.84, y: -1.37, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -81477,11 +81489,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2959941100833089809, guid: aa1c7a45623c0e14b81c23f354998b7b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.39
+      value: 2.84
       objectReference: {fileID: 0}
     - target: {fileID: 2959941100833089809, guid: aa1c7a45623c0e14b81c23f354998b7b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 19.77
+      value: -1.37
       objectReference: {fileID: 0}
     - target: {fileID: 2959941100833089809, guid: aa1c7a45623c0e14b81c23f354998b7b, type: 3}
       propertyPath: m_LocalPosition.z
