@@ -9,7 +9,11 @@ public class Inventory : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        inv.Add("health",0);
+        if (!inv.ContainsKey("health"))
+            inv.Add("health",0);
+        else {
+            inv["health"]=0;
+        }
     }
 
     // Update is called once per frame

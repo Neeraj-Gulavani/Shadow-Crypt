@@ -15,6 +15,11 @@ public class GameManager : MonoBehaviour
     public void Quit() {
         Application.Quit();
     }
+
+    public void GotoMainMenu() {
+             SceneManager.LoadScene("MainMenu");   
+
+    }
     // Start is called before the first frame update
     void Start()
     {
