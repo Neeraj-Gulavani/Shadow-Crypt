@@ -11,6 +11,7 @@ public class EnemyHealth : MonoBehaviour
     public float knockbackForce=15f;
     public CinemachineImpulseSource impulseSrc;
     public Rigidbody2D rb;
+    public Color defC;
     public void TakeDamage(float amt,Vector2 attackPosition) {
         Shake(1f);
         StartCoroutine(KnockBack(attackPosition,amt));
@@ -34,6 +35,7 @@ public class EnemyHealth : MonoBehaviour
     {
         health=maxHealth;
         sr = GetComponent<SpriteRenderer>();
+        defC = sr.color;
     }
 
     void Shake(float intensity=1f) {
@@ -49,7 +51,7 @@ public class EnemyHealth : MonoBehaviour
     {
         sr.color = Color.red;
         yield return new WaitForSeconds(flashDuration);
-        sr.color = Color.white;
+        sr.color = defC;
     }
 
     IEnumerator KnockBack(Vector2 attackPosition, float amt) {

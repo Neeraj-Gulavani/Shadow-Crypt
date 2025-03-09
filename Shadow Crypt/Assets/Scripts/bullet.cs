@@ -23,8 +23,10 @@ public class bullet : MonoBehaviour
             PlayerHealth ph =other.GetComponent<PlayerHealth>();
             if (ph!=null) {
                 ph.TakeDamage(damage);
-                gameObject.SetActive(false);
+                Destroy(gameObject);
             }
         }
+        if (!other.CompareTag("Enemy"))
+            Destroy(gameObject);
     }
 }
