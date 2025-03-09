@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private Vector2 movement;
     public float moveSpeed=1f;
+    public static bool canMove;
     private Animator animator;
     private float xScale, yScale;
     private float lastDir;
@@ -22,6 +23,7 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        canMove=true;
         rb = GetComponent<Rigidbody2D>();
         xScale = transform.localScale.x;
         animator = GetComponent<Animator>();
@@ -30,6 +32,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!canMove) return;
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
         animator.SetFloat("Horizontal", movement.x);
@@ -50,6 +53,7 @@ public class PlayerMovement : MonoBehaviour
     }   
     void FixedUpdate()
     {
+        if (!canMove) return;
         if (!isdashing) {
         rb.MovePosition(rb.position + movement * moveSpeed * Time.deltaTime);
         }
@@ -58,7 +62,7 @@ public class PlayerMovement : MonoBehaviour
     IEnumerator Dash() {
 
         dashTrail.enabled = true;
-        rb.isKinematic = true;
+        //rb.isKinematic = true;
         isdashing = true;
         Vector2 dashDirection = movement.normalized;
 
@@ -76,7 +80,7 @@ if (dashDirection == Vector2.zero) {
         dashCooldownTimer=dashCooldown;
         rb.velocity= Vector2.zero;
         isdashing=false;
-       rb.isKinematic = false;
+       //rb.isKinematic = false;
        dashTrail.enabled=false;
     }
 
