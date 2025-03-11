@@ -13,7 +13,7 @@ Shadow Crypt is a fast-paced dungeon crawler style game where you navigate throu
 
 ---
 
-🕹️ Controls
+## 🕹️ Controls
 
 WASD – Move character
 
@@ -29,7 +29,7 @@ ESC – Pause Menu
 
 ---
 
-🚀 Installation
+## 🚀 Installation
 
 Download the zip file from "Download and Play" folder , extract it and run the .exe to enjot the game for yourself!
 ---
