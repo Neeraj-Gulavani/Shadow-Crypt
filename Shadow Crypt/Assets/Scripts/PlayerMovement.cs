@@ -73,8 +73,8 @@ if (dashDirection == Vector2.zero) {
             float time=0;
              while (time < dashDuration) {
              rb.MovePosition(rb.position + dashDirection * dashSpeed * Time.deltaTime);
-            time+=Time.deltaTime;
-            yield return null;
+            time+=Time.fixedDeltaTime;
+            yield return new WaitForFixedUpdate();
              }
             
         dashCooldownTimer=dashCooldown;

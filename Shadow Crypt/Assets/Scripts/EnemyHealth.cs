@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using Pathfinding;
 public class EnemyHealth : MonoBehaviour
 {
     public float health;
@@ -12,8 +13,9 @@ public class EnemyHealth : MonoBehaviour
     public CinemachineImpulseSource impulseSrc;
     public Rigidbody2D rb;
     public Color defC;
+    private AIPath aiPath;
     public void TakeDamage(float amt,Vector2 attackPosition) {
-        Shake(1f);
+        Shake(0.5f);
         StartCoroutine(KnockBack(attackPosition,amt));
         StartCoroutine(DamageFlash());
         
@@ -28,11 +30,13 @@ public class EnemyHealth : MonoBehaviour
     }
     public void Die() {
         gameObject.SetActive(false);
+        Destroy(gameObject);
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        aiPath = GetComponent<AIPath>();
         health=maxHealth;
         sr = GetComponent<SpriteRenderer>();
         defC = sr.color;
@@ -55,24 +59,33 @@ public class EnemyHealth : MonoBehaviour
     }
 
     IEnumerator KnockBack(Vector2 attackPosition, float amt) {
-
+        aiPath.enabled = false;
+        rb.isKinematic =true;
         Vector2 knockbackDirection = (transform.position - (Vector3)attackPosition).normalized;
         float duration = 0.4f;
         float time = 0;
 
         while (time < duration)
         {
+            
             rb.velocity = knockbackDirection * (knockbackForce * (1 - time / duration));
             time += Time.deltaTime;
             yield return null;
         }
+    
+
+        
 
     rb.velocity = Vector2.zero;
+    rb.isKinematic=false;
+    
     if (amt>health) {
             Die();
         } else {
             health-=amt;
         }
+        
+    aiPath.enabled = true;
     }
 
 

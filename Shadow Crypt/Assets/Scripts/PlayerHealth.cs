@@ -12,10 +12,10 @@ public class PlayerHealth : MonoBehaviour
     public float flashDuration;
     public CinemachineImpulseSource impulseSrc;
     public Image h1,h2,h3,h4;
-
+    public Image fillBar;
     public GameObject deathui;
     public void TakeDamage(float amt) {
-        Shake(0.2f);
+        Shake(1f);
 
         StartCoroutine(DamageFlash());
             if (amt>=health) {
@@ -24,7 +24,8 @@ public class PlayerHealth : MonoBehaviour
         } else {
             health-=amt;
         }
-        DispHearts();
+        //DispHearts();
+        HealthBarUpdate();
     }
 
     public void Heal(float amt) {
@@ -33,7 +34,8 @@ public class PlayerHealth : MonoBehaviour
         } else {
         health+=amt;
         }
-        DispHearts();
+        //DispHearts();
+        HealthBarUpdate();
     }
     public void Die() {
         
@@ -50,13 +52,10 @@ public class PlayerHealth : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         health=maxHealth;
         sr = GetComponent<SpriteRenderer>();
-        h1 = GameObject.Find("Canvas").transform.Find("HUD")?.transform.Find("1").GetComponent<Image>();
-    h2 = GameObject.Find("Canvas").transform.Find("HUD")?.transform.Find("2").GetComponent<Image>();
-    h3 = GameObject.Find("Canvas").transform.Find("HUD")?.transform.Find("3").GetComponent<Image>();
-    h4 = GameObject.Find("Canvas").transform.Find("HUD")?.transform.Find("4").GetComponent<Image>();
+        
     }
 
-    void Shake(float intensity=1f) {
+    public void Shake(float intensity=1f) {
         impulseSrc.GenerateImpulseWithForce(intensity);
     }
     // Update is called once per frame
@@ -105,6 +104,10 @@ public class PlayerHealth : MonoBehaviour
             h3.gameObject.SetActive(false);
             h4.gameObject.SetActive(false);
         }
+    }
+
+    void HealthBarUpdate() {
+        fillBar.fillAmount = health / maxHealth;
     }
 
 }

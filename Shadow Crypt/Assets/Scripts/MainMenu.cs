@@ -12,7 +12,7 @@ public class MainMenu : MonoBehaviour
         cpanel.SetActive(false);
     }
     public void Play() {
-        SceneManager.LoadScene("Scene1");
+        SceneManager.LoadScene("Scene2");
     }
 
     public void Quit() {
