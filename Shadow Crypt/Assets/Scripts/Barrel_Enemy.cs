@@ -70,17 +70,25 @@ public class Barrel_Enemy : MonoBehaviour
          foreach (Collider2D obj in objects)
         {
             PlayerHealth ph = obj.GetComponent<PlayerHealth>();
+            EnemyHealth eh = obj.GetComponent<EnemyHealth>();
             float distance = Vector2.Distance(transform.position, obj.transform.position);
-           
+
             if (ph != null)
             {
-                Instantiate(explosionVfx,transform.position,Quaternion.identity);
+                Instantiate(explosionVfx, transform.position, Quaternion.identity);
 
                 ph.Shake(2f);
                 float damageAmount = Mathf.Lerp(damage, 0, distance / explosionRadius);
                 ph.TakeDamage(damageAmount);
                 
+                
             }
+            if (eh != null)
+                {
+                    float damageAmount = Mathf.Lerp(damage, 0, distance / explosionRadius);
+                eh.TakeDamage(damageAmount, transform.position);
+                }
+
 
             Rigidbody2D rb = obj.GetComponent<Rigidbody2D>();
             if (rb != null)

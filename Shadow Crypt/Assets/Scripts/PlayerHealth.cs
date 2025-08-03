@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using UnityEngine.UI;
+using Unity.VisualScripting;
+using Unity.VisualScripting.Dependencies.Sqlite;
 public class PlayerHealth : MonoBehaviour
 {
     public float health;
@@ -14,18 +16,34 @@ public class PlayerHealth : MonoBehaviour
     public Image h1,h2,h3,h4;
     public Image fillBar;
     public GameObject deathui;
-    public void TakeDamage(float amt) {
-        Shake(1f);
 
+    public GameObject imapctVfx;
+    private float targetFill;
+    public float fillSpeed = 5f;
+
+    public float lowhealth=10f;
+    public GameObject lowhealthpanel;
+    public void TakeDamage(float amt)
+    {
+        Shake(1f);
+        if (PlayerMovement.isparry) return;
         StartCoroutine(DamageFlash());
-            if (amt>=health) {
+        if (amt >= health)
+        {
             Die();
-            health-=amt;
-        } else {
-            health-=amt;
+            health -= amt;
+        }
+        else
+        {
+            health -= amt;
         }
         //DispHearts();
         HealthBarUpdate();
+    }
+
+    public void ImpactFx(Vector2 pos) {
+        GameObject vfx = Instantiate(imapctVfx, pos, Quaternion.identity);
+        Destroy(vfx,1f);
     }
 
     public void Heal(float amt) {
@@ -51,8 +69,8 @@ public class PlayerHealth : MonoBehaviour
         deathui.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
         health=maxHealth;
+        targetFill = health;
         sr = GetComponent<SpriteRenderer>();
-        
     }
 
     public void Shake(float intensity=1f) {
@@ -61,11 +79,22 @@ public class PlayerHealth : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R)) {
-            if (Inventory.inv["health"]>0) {
-                Heal(40);
-                Inventory.inv["health"]-=1;
+        fillBar.fillAmount = Mathf.Lerp(fillBar.fillAmount, targetFill, fillSpeed * Time.deltaTime);
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            if (Inventory.inv["health"] > 0)
+            {
+                Heal(15);
+                Inventory.inv["health"] -= 1;
             }
+        }
+        if (health <= lowhealth)
+        {
+            lowhealthpanel.SetActive(true);
+        }
+        else
+        {
+            lowhealthpanel.SetActive(false);
         }
     }
 
@@ -107,7 +136,12 @@ public class PlayerHealth : MonoBehaviour
     }
 
     void HealthBarUpdate() {
-        fillBar.fillAmount = health / maxHealth;
+        targetFill = health / maxHealth;
+        
     }
-
+    public void setHealth(float health)
+    {
+        this.health = health;
+        HealthBarUpdate();
+    }
 }

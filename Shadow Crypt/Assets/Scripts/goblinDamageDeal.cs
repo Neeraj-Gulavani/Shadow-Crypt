@@ -22,7 +22,8 @@ public class goblinDamageDeal : MonoBehaviour
             if (ph != null)
             {
                 ph.TakeDamage(9);
-                
+                Vector2 hitPos = other.ClosestPoint(transform.position);
+                ph.ImpactFx(hitPos);
 
             }
         }

@@ -4,26 +4,32 @@ using UnityEngine;
 using TMPro;
 public class Inventory : MonoBehaviour
 {
-    public static Dictionary<string,int> inv=new Dictionary<string, int>();
+    public static Dictionary<string, int> inv = new Dictionary<string, int>();
     public TMP_Text healthText;
     // Start is called before the first frame update
     void Start()
     {
         if (!inv.ContainsKey("health"))
-            inv.Add("health",0);
-        else {
-            inv["health"]=0;
+            inv.Add("health", 0);
+        else
+        {
+            inv["health"] = 0;
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        healthText.text=inv["health"].ToString();
+        healthText.text = inv["health"].ToString();
     }
 
-    public static void AddItem(string itemName,int quantity) {
-        inv[itemName]+=quantity;
+    public static void AddItem(string itemName, int quantity)
+    {
+        inv[itemName] += quantity;
+    }
+    public void AddOneHealthItem()
+    {
+        AddItem("health", 1);
     }
 
 }

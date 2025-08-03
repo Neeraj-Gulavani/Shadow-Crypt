@@ -10,13 +10,16 @@ public class DirectionalAttack : MonoBehaviour
     public SwordDamageDealer sdd;
     public bool onattack;
     public PolygonCollider2D[] colliders;
-    public float cooldown=1f;
+    public static float cooldown=1f;
     float time=0f;
     float nextfiretime=0f;
+    public AudioClip[] swoosh;
+    private AudioSource playerAud;
     // Start is called before the first frame update
     void Start()
     {
         anim = GetComponent<Animator>();
+        playerAud = GetComponent<AudioSource>();
         //swordTrail.enabled = false;
     }
 
@@ -33,6 +36,9 @@ public class DirectionalAttack : MonoBehaviour
     void Attack() {
         
         anim.SetTrigger("onattack");
+        if (swoosh.Length == 0) return;
+            int i = Random.Range(0, swoosh.Length);
+            playerAud.PlayOneShot(swoosh[i]);
         StartCoroutine(EnableTrailEffect());
     }
 

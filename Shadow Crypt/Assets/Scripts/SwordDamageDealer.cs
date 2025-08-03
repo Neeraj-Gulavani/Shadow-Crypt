@@ -6,12 +6,14 @@ public class SwordDamageDealer : MonoBehaviour
 {
 
     private PolygonCollider2D hitbox;
-
+    public GameObject EnemyHitVfx;
+    public AudioClip enemyHitAudio;
     // Start is called before the first frame update
     void Start()
     {
         hitbox = GetComponent<PolygonCollider2D>();
         hitbox.enabled = false;
+
     }
 
     public void EnableHitbox()
@@ -32,11 +34,19 @@ public class SwordDamageDealer : MonoBehaviour
             EnemyHealth enemy = other.GetComponent<EnemyHealth>();
             if (enemy != null)
             {
-                enemy.TakeDamage(60,transform.position);
-                
+                AudioSource aud = other.GetComponent<AudioSource>();
+                if (aud)
+                {
+                    aud.PlayOneShot(enemyHitAudio);
+                }
+                enemy.TakeDamage(60, transform.position, 10);
+                Vector2 ImpactPos = other.ClosestPoint(transform.position);
+                GameObject blood = Instantiate(EnemyHitVfx, ImpactPos, Quaternion.identity);
 
             }
         }
+  
+            
     }
 
  

@@ -9,13 +9,14 @@ public class goblin_enemy : MonoBehaviour
     public float shootRange;
     public GameObject bullet;
     public float fireRate;
-    public float nextFireTime;
+    public float nextFireTime=0;
     public Transform firePt;
     public float bulletSpeed;
     private Animator anim;
     public PolygonCollider2D[] colliders;
     private AIPath aiPath;
     bool isattacking=false;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -38,7 +39,13 @@ public class goblin_enemy : MonoBehaviour
         {
             transform.localScale = new Vector3(-1, 1, 1);
         }
+
         anim.SetFloat("speed",aiPath.velocity.sqrMagnitude);
+
+         if (nextFireTime == 0)  
+        {
+            nextFireTime = Time.time + 0.2f;
+        }
         if (player==null) return;
         float playerDistance=Vector2.Distance(transform.position,player.position);
             if (playerDistance<=shootRange) {
@@ -46,7 +53,10 @@ public class goblin_enemy : MonoBehaviour
                     Slash();
                     nextFireTime = Time.time+fireRate;
                 }
-            } 
+            } else
+        {
+            nextFireTime = 0f;
+            }
 
     }
    
@@ -77,8 +87,10 @@ public class goblin_enemy : MonoBehaviour
 
     }
 
-    void FlipBack() {
-        transform.rotation = Quaternion.Euler(transform.rotation.x,180,transform.rotation.z);
+    void FlipBack()
+    {
+        transform.rotation = Quaternion.Euler(transform.rotation.x, 180, transform.rotation.z);
+
     }
     void Flip() {
         transform.rotation = Quaternion.Euler(transform.rotation.x,0,transform.rotation.z);
