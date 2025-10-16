@@ -14,6 +14,10 @@ public class abilityDisplayManager : MonoBehaviour
 
     public static bool rogueEnabled = false;
     public GameObject rogueDisplayboundary, rogueGrayIcon;
+
+
+    public static bool slash360Enabled = false;
+    public GameObject slash360Displayboundary, slash360GrayIcon; 
     private GameObject player;
     // Start is called before the first frame update
     void Start()

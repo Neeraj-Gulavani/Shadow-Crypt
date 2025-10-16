@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using UnityEngine.UI;
-using Unity.VisualScripting;
-using Unity.VisualScripting.Dependencies.Sqlite;
 public class PlayerHealth : MonoBehaviour
 {
     public float health;

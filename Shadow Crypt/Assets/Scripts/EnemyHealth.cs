@@ -4,6 +4,7 @@ using UnityEngine;
 using Cinemachine;
 using Pathfinding;
 using UnityEngine.UI;
+using UnityEngine.Events;
 public class EnemyHealth : MonoBehaviour
 {
     private float targetFill;
@@ -29,13 +30,21 @@ public class EnemyHealth : MonoBehaviour
     public float energyDrop = 10f;
     public float auraDrop = 100f;
 
+    public UnityEvent TakeDamageAnimEvent;
+    public UnityEvent DeathAnimEvent;
+
+    private bool isDead = false;
     public void TakeDamage(float amt, Vector2 attackPosition, float kbF = 15f)
     {
-
+        if (isDead) return;
         Shake(0.5f);
         knockbackForce = kbF;
         StartCoroutine(KnockBack(attackPosition, amt));
         StartCoroutine(DamageFlash());
+        if (TakeDamageAnimEvent != null || TakeDamageAnimEvent.GetPersistentEventCount() != 0)
+        {
+            TakeDamageAnimEvent.Invoke();
+        }
 
     }
 
@@ -51,10 +60,25 @@ public class EnemyHealth : MonoBehaviour
         }
         HealthBarUpdate();
     }
-    public void Die() {
+    public void Die()
+    {
         PlayerAbilityManager pam = GameObject.FindGameObjectWithTag("Player").transform.GetComponent<PlayerAbilityManager>(); ;
         pam.RestoreEnergy(energyDrop);
         CurrencyManager.Credit(auraDrop);
+        isDead = true;
+        if (DeathAnimEvent == null || DeathAnimEvent.GetPersistentEventCount() == 0)
+        {
+            DeathDestroy();
+        } else
+        {
+            DeathAnimEvent.Invoke();
+
+        }
+        
+    }
+    
+    public void DeathDestroy()
+    {
         gameObject.SetActive(false);
         Destroy(gameObject);
     }

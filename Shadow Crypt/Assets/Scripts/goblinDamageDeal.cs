@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class goblinDamageDeal : MonoBehaviour
 {
-     private PolygonCollider2D hitbox;
+    private PolygonCollider2D hitbox;
+    public float dmgamt = 9f;
 
     // Start is called before the first frame update
     void Start()
@@ -21,7 +22,7 @@ public class goblinDamageDeal : MonoBehaviour
             PlayerHealth ph = other.GetComponent<PlayerHealth>();
             if (ph != null)
             {
-                ph.TakeDamage(9);
+                ph.TakeDamage(dmgamt);
                 Vector2 hitPos = other.ClosestPoint(transform.position);
                 ph.ImpactFx(hitPos);
 

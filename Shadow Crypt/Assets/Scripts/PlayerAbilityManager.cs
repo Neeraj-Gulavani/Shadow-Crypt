@@ -40,6 +40,10 @@ public class PlayerAbilityManager : MonoBehaviour
     public void RestoreEnergy(float amt)
     {
         energy += amt;
+        if (energy>100)
+        {
+            energy = 100;
+        }
         UpdateEnergyBar();
     }
 
@@ -59,6 +63,7 @@ public class PlayerAbilityManager : MonoBehaviour
     public GameObject lightningVfx;
     public GameObject soulVfx;
     public GameObject ZapVfx;
+    public GameObject slash360vfx;
     public GameObject magiccircle;
     public GameObject magiccirclePurple;
     public GameObject rogueVfx;
@@ -82,6 +87,12 @@ public class PlayerAbilityManager : MonoBehaviour
         abilities.Add(new Lightning(KeyCode.Q, 5f, lightningVfx, magiccircle, ZapVfx, 30f));
         abilityDisplayManager.lightningEnabled = true;
     }
+    public void Unlockslash360()
+    {
+
+        abilities.Add(new slash360(KeyCode.C,slash360vfx,20f));
+        abilityDisplayManager.slash360Enabled = true;
+    }
 
     public void UnlockSoulDrain()
     {
@@ -99,8 +110,8 @@ public class PlayerAbilityManager : MonoBehaviour
 
     void Start()
     {
-        
-        
+
+        Unlockslash360();
         energy = 0;
         targetFill = energy;
     }
@@ -193,22 +204,24 @@ public class PlayerAbilityManager : MonoBehaviour
 
         public void CheckActivate()
         {
-            if (Input.GetKeyDown(key))
-            {
                  Transform player = GameObject.FindGameObjectWithTag("Player").transform;
                  PlayerAbilityManager pam = player.GetComponent<PlayerAbilityManager>();
-            if (!pam.CheckEnergy(energyCost))
+            if (Input.GetKeyDown(key))
             {
-                Debug.Log("Not enough Soul Energy!");
-                return;
-            }
-            player.GetComponent<PlayerAbilityManager>().canUseAbility = false;
+                if (!pam.CheckEnergy(energyCost))
+                {
+                    Debug.Log("Not enough Soul Energy!");
+                    return;
+                }
+                if (!pam.canUseAbility) return;
+            pam.canUseAbility = false;
                 circle.SetActive(true);
 
             }
 
             if (Input.GetKeyUp(key))
             {
+               //pam.canUseAbility = true;
                 circle.SetActive(false);
                 Activate();
             }
@@ -301,10 +314,12 @@ public class PlayerAbilityManager : MonoBehaviour
                     Debug.Log("Not enough Soul Energy!");
                     return;
                 }
+                if (!pam.canUseAbility) return;
+                pam.canUseAbility = false;
                 circle.SetActive(true);
                 
             
-                    player.GetComponent<PlayerAbilityManager>().canUseAbility = false;
+        
 
                 lastUsedTime = Time.time;
 
@@ -396,12 +411,89 @@ class Rogue : Ability
             {
                  Transform player = GameObject.FindGameObjectWithTag("Player").transform;
                  PlayerAbilityManager pam = player.GetComponent<PlayerAbilityManager>();
-            if (!pam.CheckEnergy(energyCost))
+                if (!pam.CheckEnergy(energyCost))
+                {
+                    Debug.Log("Not enough Soul Energy!");
+                    return;
+                }
+            if (!pam.canUseAbility) return;
+            pam.canUseAbility = false;
+                Activate();
+
+            }
+
+
+        }
+}
+
+
+class slash360 : Ability
+    {
+        public GameObject vfx;
+
+        public KeyCode key;
+        public float radius = 3f;
+
+  
+        public float energyCost;
+        public slash360(KeyCode k, GameObject vfx, float energyCost)
+        {
+            this.key = k;
+            this.vfx = vfx;
+            this.energyCost = energyCost;
+        }
+
+        public void Activate()
+        {
+            Transform player = GameObject.FindGameObjectWithTag("Player").transform;
+            PlayerAbilityManager pam = player.GetComponent<PlayerAbilityManager>();
+            if (!pam.UseEnergy(energyCost))
             {
                 Debug.Log("Not enough Soul Energy!");
                 return;
             }
-            player.GetComponent<PlayerAbilityManager>().canUseAbility = false;
+            Vector2 playerPos = player.position;
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(player.position, radius);
+            GameObject theVfx = Instantiate(vfx, playerPos, Quaternion.identity);
+            foreach (Collider2D c in colliders)
+            {
+                if (!c.CompareTag("Enemy")) continue;
+
+                
+
+
+                c.GetComponent<EnemyHealth>().TakeDamage(50, theVfx.transform.position, 10f);
+
+                var ai = c.GetComponentInParent<AIPath>();
+                if (ai != null)
+                {
+                    ai.enabled = false;
+                }
+                else
+                {
+                    Debug.LogWarning("No AIPath found on " + c.name);
+                }
+            }
+             player.GetComponent<PlayerAbilityManager>().canUseAbility = true;
+           
+            // 00E9FF
+        }
+
+
+
+
+        public void CheckActivate()
+        {
+            if (Input.GetKeyDown(key))
+            {
+                Transform player = GameObject.FindGameObjectWithTag("Player").transform;
+                PlayerAbilityManager pam = player.GetComponent<PlayerAbilityManager>();
+                if (!pam.CheckEnergy(energyCost))
+                {
+                    Debug.Log("Not enough Soul Energy!");
+                    return;
+                }
+                player.GetComponent<PlayerAbilityManager>().canUseAbility = false;
                 Activate();
 
             }
