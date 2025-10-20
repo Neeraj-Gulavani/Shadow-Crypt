@@ -3,8 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
+using UnityEngine.Rendering.Universal;
 public class PlayerHealth : MonoBehaviour
 {
+    private Light2D globalLight;
+    public Light2D blindedLight;
+    PlayerControls controls;
     public float health;
     public float maxHealth=100f;
     public SpriteRenderer sr,sr1,sr2;
@@ -25,6 +30,7 @@ public class PlayerHealth : MonoBehaviour
     {
         Shake(1f);
         if (PlayerMovement.isparry) return;
+        PlayerVibration.instance.Vibrate(0.6f, 1.0f, 0.25f); 
         StartCoroutine(DamageFlash());
         if (amt >= health)
         {
@@ -53,13 +59,29 @@ public class PlayerHealth : MonoBehaviour
         //DispHearts();
         HealthBarUpdate();
     }
-    public void Die() {
-        
+    public void Die()
+    {
+
         deathui.SetActive(true);
         Cursor.lockState = CursorLockMode.Confined;
         gameObject.SetActive(false);
     }
 
+    void Awake()
+    {
+        controls = new PlayerControls();
+        controls.Gameplay.Heal.started += ctx => PlayerHeal();
+         globalLight = GameObject.Find("Global Light 2D").GetComponent<Light2D>();
+    }
+     void OnEnable()
+    {
+        controls.Gameplay.Enable();
+    }
+
+    void OnDisable()
+    {
+        controls.Gameplay.Disable();
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -80,11 +102,7 @@ public class PlayerHealth : MonoBehaviour
         fillBar.fillAmount = Mathf.Lerp(fillBar.fillAmount, targetFill, fillSpeed * Time.deltaTime);
         if (Input.GetKeyDown(KeyCode.R))
         {
-            if (Inventory.inv["health"] > 0)
-            {
-                Heal(15);
-                Inventory.inv["health"] -= 1;
-            }
+
         }
         if (health <= lowhealth)
         {
@@ -95,6 +113,15 @@ public class PlayerHealth : MonoBehaviour
             lowhealthpanel.SetActive(false);
         }
     }
+    
+    public void PlayerHeal()
+    {
+        if (Inventory.inv["health"] > 0)
+            {
+                Heal(15);
+                Inventory.inv["health"] -= 1;
+            }
+    }
 
     IEnumerator DamageFlash()
     {
@@ -103,35 +130,6 @@ public class PlayerHealth : MonoBehaviour
         sr.color = Color.white;
     }
 
-    void DispHearts() {
-        if (health>30) {
-            h1.gameObject.SetActive(true);
-            h2.gameObject.SetActive(true);
-            h3.gameObject.SetActive(true);
-            h4.gameObject.SetActive(true);
-        } else if (health>20 && health<31) {
-            h1.gameObject.SetActive(true);
-            h2.gameObject.SetActive(true);
-            h3.gameObject.SetActive(true);
-            h4.gameObject.SetActive(false);
-        } else if (health<21 && health>10) {
-            h1.gameObject.SetActive(true);
-            h2.gameObject.SetActive(true);
-            h3.gameObject.SetActive(false);
-            h4.gameObject.SetActive(false);
-        } else if (health<11 && health>0) {
-            h1.gameObject.SetActive(true);
-            h2.gameObject.SetActive(false);
-            h3.gameObject.SetActive(false);
-            h4.gameObject.SetActive(false);
-        }
-        else if (health<=1) {
-            h1.gameObject.SetActive(false);
-            h2.gameObject.SetActive(false);
-            h3.gameObject.SetActive(false);
-            h4.gameObject.SetActive(false);
-        }
-    }
 
     void HealthBarUpdate() {
         targetFill = health / maxHealth;
@@ -142,4 +140,50 @@ public class PlayerHealth : MonoBehaviour
         this.health = health;
         HealthBarUpdate();
     }
+
+    public void ApplyBlindEffect()
+    {
+        StartCoroutine(blindedLightActivate(0.5f, 0.5f));
+        StartCoroutine(FadeLight(0.02f, 0.5f));
+        StartCoroutine(resetBlind());
+
+    }
+
+    IEnumerator resetBlind()
+    {
+        yield return new WaitForSeconds(4f);
+        StartCoroutine(blindedLightActivate(0f, 0.5f));
+        StartCoroutine(FadeLight(1f, 0.5f));
+    }
+
+    IEnumerator blindedLightActivate(float targetIntensity, float duration)
+    {
+        float start = blindedLight.intensity;
+        float time = 0f;
+
+    while (time < duration)
+    {
+        time += Time.deltaTime;
+        blindedLight.intensity = Mathf.Lerp(start, targetIntensity, time / duration);
+        yield return null;
+    }
+
+    blindedLight.intensity = targetIntensity;
+    }
+
+    IEnumerator FadeLight(float targetIntensity, float duration)
+{
+    float start = globalLight.intensity;
+    float time = 0f;
+
+    while (time < duration)
+    {
+        time += Time.deltaTime;
+        globalLight.intensity = Mathf.Lerp(start, targetIntensity, time / duration);
+        yield return null;
+    }
+
+    globalLight.intensity = targetIntensity;
+}
+
 }

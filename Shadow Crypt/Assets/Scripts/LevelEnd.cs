@@ -20,7 +20,8 @@ public class LevelEnd : MonoBehaviour
         if (c.CompareTag("Player"))
         {
             playerTeleport p = c.GetComponent<playerTeleport>();
-            StartCoroutine(p.SceneChangeTp());
+            p.NextScene();
+            //StartCoroutine(p.SceneChangeTp());
         }
     }
 }

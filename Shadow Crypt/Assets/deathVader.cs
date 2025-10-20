@@ -16,7 +16,15 @@ public class deathVader : MonoBehaviour
     private Animator anim;
     public PolygonCollider2D[] colliders;
     private AIPath aiPath;
-    public bool isattacking=false;
+    public bool isattacking = false;
+
+    [Header("Summoning Settings")]
+public GameObject summonPrefab;   // The enemy to summon
+public int summonCount = 3;       // How many to summon
+public float summonRadius = 3f;   // Distance around boss
+public float summonInterval = 10f; // Time between summons
+private float nextSummonTime = 10f;
+
     
     // Start is called before the first frame update
     void Start()
@@ -55,7 +63,13 @@ public class deathVader : MonoBehaviour
         {
             nextFireTime = Time.time + 0.2f;
         }
-        if (player==null) return;
+        if (player == null) return;
+        if (Time.time >= nextSummonTime)
+{
+    StartCoroutine(SummonEnemies());
+    nextSummonTime = Time.time + summonInterval;
+}
+
         float playerDistance=Vector2.Distance(transform.position,player.position);
             if (playerDistance<=shootRange) {
             
@@ -107,7 +121,43 @@ public class deathVader : MonoBehaviour
     }
     public void PlayDeathAnimation()
     {
-        anim.SetBool("die",true);
+        anim.SetBool("die", true);
     }
+    
+   IEnumerator SummonEnemies()
+    {
+    Debug.Log("Summoning enemies!");
+
+    anim.SetTrigger("issummon");
+    aiPath.canMove = false;
+    anim.SetFloat("speed", 0);
+
+    yield return new WaitForSeconds(0.5f); // short delay before spawning (for animation)
+
+    // Pick a random number of enemies to summon this time
+    int actualSummonCount = Random.Range(2, summonCount + 1); // e.g., between 2 and summonCount
+
+    for (int i = 0; i < actualSummonCount; i++)
+    {
+        // Distribute evenly in a circle + add a bit of randomness
+        float angle = (i * Mathf.PI * 2f / actualSummonCount) + Random.Range(-0.3f, 0.3f);
+        Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)).normalized;
+
+        // Ensure they spawn around the boss (not inside)
+        Vector2 spawnPos = (Vector2)transform.position + direction * summonRadius;
+
+        // Optional: Add a small random offset for natural spacing
+        spawnPos += Random.insideUnitCircle * 0.5f;
+
+            Instantiate(summonPrefab, spawnPos, Quaternion.identity);
+        Debug.Log("Spawned summon at: " + spawnPos);
+
+    }
+
+    yield return new WaitForSeconds(0.5f); // small recovery delay
+    aiPath.canMove = true;
+}
+
+
 
 }

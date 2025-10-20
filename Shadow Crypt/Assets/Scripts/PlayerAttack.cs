@@ -1,13 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.InputSystem;
 public class PlayerAttack : MonoBehaviour
 {
+    PlayerControls controls;
     private Animator anim;
     public TrailRenderer swordTrail;
     public SwordDamageDeal sdd;
     // Start is called before the first frame update
+    void Awake()
+    {
+        controls = new PlayerControls();
+        controls.Gameplay.Attack.started += ctx => Attack();
+    }
     void Start()
     {
         anim = GetComponent<Animator>();
@@ -17,10 +23,13 @@ public class PlayerAttack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+       
+        /*
         if (Input.GetMouseButtonDown(0)) {
             Debug.Log("hi");
             Attack();
         }
+        */
     }
 
     void Attack() {
@@ -35,5 +44,15 @@ public class PlayerAttack : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         swordTrail.enabled = false;
         sdd.DisableHitbox();
+    }
+
+    void OnEnable()
+    {
+        controls.Gameplay.Enable();
+    }
+
+    void OnDisable()
+    {
+        controls.Gameplay.Disable();
     }
 }

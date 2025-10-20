@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Pathfinding;
 using UnityEngine;
-
+using UnityEngine.InputSystem;
 public class DirectionalAttack : MonoBehaviour
 {
     private Animator anim;
@@ -10,11 +10,17 @@ public class DirectionalAttack : MonoBehaviour
     public SwordDamageDealer sdd;
     public bool onattack;
     public PolygonCollider2D[] colliders;
-    public static float cooldown=1f;
+    public static float cooldown=0.8f;
     float time=0f;
     float nextfiretime=0f;
     public AudioClip[] swoosh;
     private AudioSource playerAud;
+    PlayerControls controls;
+    void Awake()
+    {
+        controls = new PlayerControls();
+        controls.Gameplay.Attack.started += ctx => Attack();
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -27,15 +33,16 @@ public class DirectionalAttack : MonoBehaviour
     void Update()
     {
         time=Time.time;
-        if (Input.GetMouseButtonDown(0) && time>=nextfiretime) {
+       /* if (Input.GetMouseButtonDown(0) && time>=nextfiretime) {
             Attack();
             nextfiretime=Time.time+cooldown;
-        }
+        } */
     }
 
     void Attack() {
-        
+        if (!(time >= nextfiretime)) return;
         anim.SetTrigger("onattack");
+        nextfiretime=Time.time+cooldown;
         if (swoosh.Length == 0) return;
             int i = Random.Range(0, swoosh.Length);
             playerAud.PlayOneShot(swoosh[i]);
@@ -68,5 +75,14 @@ public class DirectionalAttack : MonoBehaviour
         //swordTrail.enabled = false;
         sdd.DisableHitbox();
         */
+    }
+     void OnEnable()
+    {
+        controls.Gameplay.Enable();
+    }
+
+    void OnDisable()
+    {
+        controls.Gameplay.Disable();
     }
 }

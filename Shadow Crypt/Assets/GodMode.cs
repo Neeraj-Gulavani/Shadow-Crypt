@@ -15,6 +15,13 @@ public class GodMode : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         pam = player.GetComponent<PlayerAbilityManager>();
         ph = player.GetComponent<PlayerHealth>();
+        if (enableGodMode)
+        {
+            pam.UnlockLightning();
+            pam.UnlockRogue();
+            pam.Unlockslash360();
+            pam.UnlockSoulDrain();
+        }
     }
 
     // Update is called once per frame

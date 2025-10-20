@@ -183,7 +183,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03070cc12203b014e846bc8c52d9b3e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dmgamt: 9
+  dmgamt: 10
 --- !u!1 &1426802097943544503
 GameObject:
   m_ObjectHideFlags: 0
@@ -592,9 +592,9 @@ MonoBehaviour:
   tempHealth: 0
   fillBar: {fileID: 5879365187840617305}
   health: 0
-  maxHealth: 300
+  maxHealth: 500
   flashDuration: 0
-  knockbackForce: 10
+  knockbackForce: 2
   impulseSrc: {fileID: 6418298393439900331}
   rb: {fileID: 3715546653870931825}
   defC: {r: 0, g: 0, b: 0, a: 0}
@@ -727,7 +727,7 @@ MonoBehaviour:
   radius: 1.66
   height: 2
   canMove: 1
-  maxSpeed: 3
+  maxSpeed: 2.5
   gravity: {x: 0, y: 0, z: 0}
   groundMask:
     serializedVersion: 2
@@ -830,6 +830,10 @@ MonoBehaviour:
   - {fileID: 2541827448546924955}
   - {fileID: 5628020036034024449}
   isattacking: 0
+  summonPrefab: {fileID: 4279644649041058615, guid: d66191d68ed33fa4fa8824a964dc77a2, type: 3}
+  summonCount: 3
+  summonRadius: 3
+  summonInterval: 10
 --- !u!1 &8332258117493091949
 GameObject:
   m_ObjectHideFlags: 0
@@ -944,7 +948,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03070cc12203b014e846bc8c52d9b3e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dmgamt: 9
+  dmgamt: 10
 --- !u!1 &8763033708457388372
 GameObject:
   m_ObjectHideFlags: 0

@@ -17,13 +17,14 @@ GameObject:
   - component: {fileID: 5157934246252942422}
   - component: {fileID: 7259977891383779650}
   - component: {fileID: 4586398791020581600}
+  - component: {fileID: 646661079538958423}
   m_Layer: 0
   m_Name: shadow_enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7076136069726974400
 Transform:
   m_ObjectHideFlags: 0
@@ -136,6 +137,12 @@ MonoBehaviour:
   defC: {r: 0, g: 0, b: 0, a: 0}
   energyDrop: 10
   auraDrop: 100
+  TakeDamageAnimEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  DeathAnimEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &7843748631686797004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -317,3 +324,15 @@ PolygonCollider2D:
       - {x: 1.5999999, y: -1.016}
       - {x: 1.3199999, y: -0.656}
   m_UseDelaunayMesh: 0
+--- !u!114 &646661079538958423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3183941257033872722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4e6e5e0222948c4ba6de6a4fe7cdf4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

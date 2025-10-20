@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-
+using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody2D rb;
@@ -20,7 +20,13 @@ public class PlayerMovement : MonoBehaviour
     public bool isdashing = false;
     public static bool isparry = false;
 
-
+    PlayerControls controls;
+    void Awake()
+    {
+        controls = new PlayerControls();
+        controls.Gameplay.Parry.performed += ctx => Parry();
+        controls.Gameplay.Dash.performed += ctx => DashManager();
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -33,14 +39,6 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse1))
-        {
-            isparry = true;
-            rb.velocity = Vector2.zero;
-            canMove = false;
-            Debug.Log("PARRRRY");
-            animator.SetTrigger("isparry");
-        }
 
         if (!canMove) return;
 
@@ -62,10 +60,7 @@ public class PlayerMovement : MonoBehaviour
         {
             dashCooldownTimer -= Time.deltaTime;
         }
-        if (Input.GetKeyDown(KeyCode.Space) && !isdashing && dashCooldownTimer <= 0)
-        {
-            StartCoroutine(Dash());
-        }
+       
     }
     void FixedUpdate()
     {
@@ -76,6 +71,13 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void DashManager()
+    {
+         if (!isdashing && dashCooldownTimer <= 0)
+        {
+            StartCoroutine(Dash());
+        }
+    }
     IEnumerator Dash()
     {
 
@@ -104,7 +106,14 @@ public class PlayerMovement : MonoBehaviour
         dashTrail.enabled = false;
     }
 
-
+    public void Parry()
+    {
+        isparry = true;
+            rb.velocity = Vector2.zero;
+            canMove = false;
+            Debug.Log("PARRRRY");
+            animator.SetTrigger("isparry");
+    }
     public void EndParry()
     {
         isparry = false;
@@ -115,6 +124,16 @@ public class PlayerMovement : MonoBehaviour
     {
         yield return new WaitForSeconds(0.3f);
         canMove = true;
+    }
+
+     void OnEnable()
+    {
+        controls.Gameplay.Enable();
+    }
+
+    void OnDisable()
+    {
+        controls.Gameplay.Disable();
     }
 
 }
