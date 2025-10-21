@@ -4,6 +4,8 @@ using UnityEngine;
 using Pathfinding;
 public class EnemyMovementManager : MonoBehaviour
 {
+    private AudioSource aud;
+    public AudioClip alertSfx;
     private AIPath aiPath;
     private Transform player;
     public float detectRange=5f;
@@ -11,6 +13,7 @@ public class EnemyMovementManager : MonoBehaviour
     private AIDestinationSetter aidest;
     void Start()
     {
+        aud = GetComponent<AudioSource>();
         aiPath = GetComponent<AIPath>();
         aiPath.enabled=false;
         aidest = GetComponent<AIDestinationSetter>();
@@ -24,6 +27,10 @@ public class EnemyMovementManager : MonoBehaviour
         if (player==null) return;
         float playerDistance=Vector2.Distance(transform.position,player.position);
         if (!hasDetected && playerDistance<=detectRange) {
+            if (alertSfx!=null && aud!=null)
+            {
+                aud.PlayOneShot(alertSfx);
+            }
             aiPath.enabled = true;
             aidest.target =player;
             hasDetected=true;

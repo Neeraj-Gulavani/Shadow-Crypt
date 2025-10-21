@@ -7,11 +7,13 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 public class EnemyHealth : MonoBehaviour
 {
+    private AudioSource aud;
+    public AudioClip deathSfx;
     private float targetFill;
     public float fillSpeed = 10f;
     public float tempHealth;
     //health bar
-
+    
     public Image fillBar;
 
      void HealthBarUpdate() {
@@ -62,10 +64,16 @@ public class EnemyHealth : MonoBehaviour
     }
     public void Die()
     {
+        if (deathSfx != null)
+    {
+        GameObject.FindGameObjectWithTag("Player").GetComponent<AudioSource>().PlayOneShot(deathSfx);
+    }
         PlayerAbilityManager pam = GameObject.FindGameObjectWithTag("Player").transform.GetComponent<PlayerAbilityManager>(); ;
         pam.RestoreEnergy(energyDrop);
         CurrencyManager.Credit(auraDrop);
         isDead = true;
+
+        
         if (DeathAnimEvent == null || DeathAnimEvent.GetPersistentEventCount() == 0)
         {
             DeathDestroy();
@@ -86,6 +94,7 @@ public class EnemyHealth : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        aud = GetComponent<AudioSource>();
         aiPath = GetComponent<AIPath>();
         health=maxHealth;
         targetFill = health;

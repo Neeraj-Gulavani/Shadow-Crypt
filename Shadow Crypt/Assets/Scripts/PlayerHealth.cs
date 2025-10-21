@@ -7,6 +7,8 @@ using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
 public class PlayerHealth : MonoBehaviour
 {
+    public AudioClip blindedSfx;
+    private AudioSource aud;
     private Light2D globalLight;
     public Light2D blindedLight;
     PlayerControls controls;
@@ -64,7 +66,14 @@ public class PlayerHealth : MonoBehaviour
 
         deathui.SetActive(true);
         Cursor.lockState = CursorLockMode.Confined;
-        gameObject.SetActive(false);
+        var gamepad = Gamepad.current;
+        if (gamepad != null)
+        {
+            gamepad.SetMotorSpeeds(0, 0);
+
+        }
+        Time.timeScale = 0f;
+            gameObject.SetActive(false);
     }
 
     void Awake()
@@ -76,6 +85,7 @@ public class PlayerHealth : MonoBehaviour
      void OnEnable()
     {
         controls.Gameplay.Enable();
+        Time.timeScale = 1f;
     }
 
     void OnDisable()
@@ -85,6 +95,7 @@ public class PlayerHealth : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        aud = GetComponent<AudioSource>();
         deathui = GameObject.Find("Canvas").transform.Find("DeathUI")?.gameObject;
         deathui.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
@@ -143,6 +154,10 @@ public class PlayerHealth : MonoBehaviour
 
     public void ApplyBlindEffect()
     {
+        if (aud!=null && blindedSfx!=null && !(aud.isPlaying && aud.clip == blindedSfx))
+        {
+            aud.PlayOneShot(blindedSfx);
+        }
         StartCoroutine(blindedLightActivate(0.5f, 0.5f));
         StartCoroutine(FadeLight(0.02f, 0.5f));
         StartCoroutine(resetBlind());

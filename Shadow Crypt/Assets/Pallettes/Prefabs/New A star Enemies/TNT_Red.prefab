@@ -338,6 +338,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2feb6233246c5b45b573cff56df27cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deathSfx: {fileID: 8300000, guid: 1594adba1c475de4e9980a24d97b5cd9, type: 3}
   fillSpeed: 10
   tempHealth: 0
   fillBar: {fileID: 3044750969810152935}
@@ -598,6 +599,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 705c5d3018c176848aecc4d9e0c14c69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alertSfx: {fileID: 8300000, guid: 67972532d1582034fa6674dfdb574802, type: 3}
   detectRange: 5
   hasDetected: 0
 --- !u!82 &2143294166886187806

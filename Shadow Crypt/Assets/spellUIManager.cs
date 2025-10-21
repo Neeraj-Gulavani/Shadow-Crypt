@@ -17,6 +17,12 @@ public class spellUIManager : MonoBehaviour
     public void EnableSpellWheel()
     {
         spellUI.SetActive(true);
+        var gamepad = Gamepad.current;
+        if (gamepad != null)
+        {
+            gamepad.SetMotorSpeeds(0, 0);
+
+        }
         Time.timeScale = 0f;
     }
 

@@ -4,6 +4,7 @@ using UnityEngine;
 using Pathfinding;
 public class goblin_enemy : MonoBehaviour
 {
+    private AudioSource aud;
     private Transform player;
     private Rigidbody2D rb;
     public float shootRange;
@@ -15,11 +16,13 @@ public class goblin_enemy : MonoBehaviour
     private Animator anim;
     public PolygonCollider2D[] colliders;
     private AIPath aiPath;
-    bool isattacking=false;
+    bool isattacking = false;
+    public AudioClip attackSfx;
     
     // Start is called before the first frame update
     void Start()
     {
+        aud = GetComponent<AudioSource>();
         aiPath = GetComponent<AIPath>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
         rb = GetComponent<Rigidbody2D>();
@@ -62,6 +65,10 @@ public class goblin_enemy : MonoBehaviour
    
 
     void Slash(){
+        if (aud!=null && attackSfx!=null)
+        {
+            aud.PlayOneShot(attackSfx);
+        }
         isattacking=true;
         anim.SetTrigger("isattacking");
         anim.SetFloat("speed",0);
